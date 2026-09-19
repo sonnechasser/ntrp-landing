@@ -12,6 +12,7 @@
   var busy = false;
   var nextIdx = 0;
   var enterRequested = false;
+  var enterHintDismissed = false;
   var enterHint = document.getElementById('enter-hint');
 
   function isDesktopEnterMode() {
@@ -200,7 +201,9 @@
 
   function syncEnterHint() {
     if (!enterHint) return;
+    // One dim hint after boot; hide forever after first Enter (Council lock).
     var show =
+      !enterHintDismissed &&
       isDesktopEnterMode() &&
       !busy &&
       nextIdx > 0 &&
@@ -230,6 +233,8 @@
           return;
         }
         enterRequested = false;
+        enterHintDismissed = true;
+        if (enterHint) enterHint.hidden = true;
       } else if (!isArmed(beat)) {
         syncEnterHint();
         return;
@@ -278,10 +283,6 @@
     tryAdvance();
   }
 
-  function syncModeClass() {
-    document.body.classList.toggle('mode-enter', isDesktopEnterMode());
-  }
-
   function revealAllImmediate() {
     beats.forEach(function (beat) {
       beat.classList.remove('is-pending');
@@ -312,6 +313,7 @@
     });
     nextIdx = beats.length;
     busy = false;
+    enterHintDismissed = true;
     if (enterHint) enterHint.hidden = true;
   }
 
@@ -337,7 +339,6 @@
 
   function start() {
     bindCopy();
-    syncModeClass();
 
     if (reduceMotion) {
       revealAllImmediate();
@@ -354,12 +355,10 @@
     window.addEventListener('resize', tryAdvance, { passive: true });
     window.addEventListener('keydown', onKeyDown);
     finePointer.addEventListener('change', function () {
-      syncModeClass();
       syncEnterHint();
       tryAdvance();
     });
     coarsePointer.addEventListener('change', function () {
-      syncModeClass();
       syncEnterHint();
       tryAdvance();
     });

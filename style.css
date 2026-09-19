@@ -104,17 +104,7 @@ body {
   height: clamp(48vh, 55vh, 62vh);
 }
 
-/* Desktop Enter mode (SON-78): collapse scroll spacers; Design can kill .enter-hint */
-body.mode-enter .spacer,
-body.mode-enter .spacer-lg {
-  height: 0;
-  overflow: hidden;
-}
-
-body.mode-enter .term-end {
-  height: 3rem;
-}
-
+/* SON-78 desktop hint — Design may delete #enter-hint */
 .enter-hint {
   color: var(--dim);
   font-size: 12px;
