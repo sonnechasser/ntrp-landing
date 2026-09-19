@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ntrp — local pipeline health</title>
-  <meta name="description" content="Local CLI health. Five vitals. Not another CRM. npm i -g @sonnechasser/ntrp@2.5.0">
+  <meta name="description" content="Local CLI. Five vitals. Not another CRM. npm i -g @sonnechasser/ntrp@2.5.0">
 
   <meta property="og:title" content="ntrp — local pipeline health">
-  <meta property="og:description" content="Forecast looks fine. Freshness says three deals are lying. Local CLI health — five vitals. npm i -g @sonnechasser/ntrp@2.5.0">
+  <meta property="og:description" content="Forecast looks fine. Freshness says three deals are lying. Local CLI — five vitals. npm i -g @sonnechasser/ntrp@2.5.0">
   <meta property="og:type" content="website">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,35 +29,35 @@
         <div class="line blank"></div>
       </div>
 
-      <!-- Desktop Enter hint (SON-78). Design may delete this node. -->
+      <!-- Boot weight: dim hint after boot (SON-78/79). Design may delete this node. -->
       <div class="enter-hint" id="enter-hint" hidden aria-hidden="true">press Enter</div>
 
       <div class="spacer" aria-hidden="true"></div>
 
-      <!-- problem (session reply — no › label) -->
+      <!-- problem (unlabeled spine reply) -->
       <div class="beat is-pending" data-beat="problem" data-played="false">
         <div class="line">
-          <span class="out typed" data-type="The CRM says the pipeline is fine. You don’t believe it — and you can’t prove what’s sick before the forecast meeting."></span><span class="cursor" hidden aria-hidden="true">█</span>
+          <span class="out typed" data-type="CRM says the pipeline is fine. You don’t buy it — and you can’t prove what’s sick before forecast."></span><span class="cursor" hidden aria-hidden="true">█</span>
         </div>
         <div class="line blank"></div>
       </div>
 
       <div class="spacer" aria-hidden="true"></div>
 
-      <!-- who -->
+      <!-- who (unlabeled spine reply) -->
       <div class="beat is-pending" data-beat="who" data-played="false">
         <div class="line">
-          <span class="out typed" data-type="For the founder or sales leader who owns a messy pipeline — and still gets asked “are we going to hit number?” every week."></span><span class="cursor" hidden aria-hidden="true">█</span>
+          <span class="out typed" data-type="For the founder or sales leader who owns a messy pipeline — and still gets asked “are we going to hit number?”"></span><span class="cursor" hidden aria-hidden="true">█</span>
         </div>
         <div class="line blank"></div>
       </div>
 
       <div class="spacer" aria-hidden="true"></div>
 
-      <!-- what -->
+      <!-- what + path (unlabeled spine replies) -->
       <div class="beat is-pending" data-beat="what" data-played="false">
         <div class="line">
-          <span class="out typed" data-type="Local CLI health. Five vitals: Freshness, Flow, Drop, Signal:Noise, Thread Depth."></span><span class="cursor" hidden aria-hidden="true">█</span>
+          <span class="out typed" data-type="Local CLI. Five vitals: Freshness, Flow, Drop, Signal:Noise, Thread Depth."></span><span class="cursor" hidden aria-hidden="true">█</span>
         </div>
         <div class="line">
           <span class="out typed" data-type="Free install → AI key → point at data → ask what’s stuck."></span><span class="cursor" hidden aria-hidden="true">█</span>
@@ -74,7 +74,6 @@
           <code class="cmd" id="install-cmd">npm i -g @sonnechasser/ntrp@2.5.0</code>
           <button type="button" class="copy" id="copy-install" aria-label="Copy install command">copy</button>
         </div>
-        <div class="line"><span class="dim">Then run ntrp · Node 22+</span></div>
         <div class="line blank"></div>
         <div class="line"><span class="out">First run asks for an AI key so chat can work. That is not a payment step.</span></div>
         <div class="line blank"></div>
@@ -84,7 +83,7 @@
 
       <div class="spacer spacer-lg" aria-hidden="true"></div>
 
-      <!-- one demo beat -->
+      <!-- one demo beat — mono column vitals + idle $ █ -->
       <div class="beat is-pending" data-beat="demo" data-played="false">
         <div class="line demo-prompt">
           <span class="prompt">›</span>
@@ -93,33 +92,38 @@
         <div class="line blank"></div>
         <div class="vital-block" hidden>
           <div class="line vital" data-vital hidden>
-            <span class="bad">●</span>
             <span class="name">Freshness</span>
+            <span class="sep" aria-hidden="true">·</span>
             <span class="score">29</span>
+            <span class="sep" aria-hidden="true">·</span>
             <span class="dim note">stale deals inflate the number</span>
           </div>
           <div class="line vital" data-vital hidden>
-            <span class="warn">●</span>
             <span class="name">Flow</span>
+            <span class="sep" aria-hidden="true">·</span>
             <span class="score">52</span>
+            <span class="sep" aria-hidden="true">·</span>
             <span class="dim note">deals stall mid-funnel</span>
           </div>
           <div class="line vital" data-vital hidden>
-            <span class="warn">●</span>
             <span class="name">Drop</span>
+            <span class="sep" aria-hidden="true">·</span>
             <span class="score">61</span>
+            <span class="sep" aria-hidden="true">·</span>
             <span class="dim note">leak at handoff</span>
           </div>
           <div class="line vital" data-vital hidden>
-            <span class="bad">●</span>
             <span class="name">Signal:Noise</span>
+            <span class="sep" aria-hidden="true">·</span>
             <span class="score">44</span>
+            <span class="sep" aria-hidden="true">·</span>
             <span class="dim note">busywork crowding real work</span>
           </div>
           <div class="line vital" data-vital hidden>
-            <span class="warn">●</span>
             <span class="name">Thread Depth</span>
+            <span class="sep" aria-hidden="true">·</span>
             <span class="score">48</span>
+            <span class="sep" aria-hidden="true">·</span>
             <span class="dim note">single-threaded risk</span>
           </div>
         </div>
