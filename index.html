@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ntrp — local pipeline health</title>
-  <meta name="description" content="Local pipeline health check. Five vitals. Not another CRM. npm i -g @sonnechasser/ntrp@2.5.0">
+  <meta name="description" content="Local CLI health. Five vitals. Not another CRM. npm i -g @sonnechasser/ntrp@2.5.0">
 
   <meta property="og:title" content="ntrp — local pipeline health">
-  <meta property="og:description" content="Free local GTM diagnostic. Five vitals. Not another CRM. npm i -g @sonnechasser/ntrp@2.5.0">
+  <meta property="og:description" content="Forecast looks fine. Nobody trusts it. Local CLI health — five vitals. npm i -g @sonnechasser/ntrp@2.5.0">
   <meta property="og:type" content="website">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./base.css">
   <link rel="stylesheet" href="./style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a0a0a'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' fill='%2333b074' font-family='monospace' font-weight='700' font-size='14'>$</text></svg>">
@@ -23,89 +23,90 @@
 
       <!-- boot -->
       <div class="line"><span class="dim">ntrp 2.5.0</span></div>
-      <div class="line"><span class="dim">local pipeline health check · free on npm</span></div>
+      <div class="line"><span class="dim">local pipeline health · free on npm</span></div>
       <div class="line blank"></div>
 
-      <!-- install CTA — above the fold -->
+      <!-- Problem -->
+      <div class="line"><span class="prompt">›</span> <span class="cmd">problem</span></div>
+      <div class="line"><span class="out">Forecast looks fine. Nobody trusts it.</span></div>
+      <div class="line"><span class="out">Your CRM shows activity — not health.</span></div>
+      <div class="line blank"></div>
+
+      <!-- Who -->
+      <div class="line"><span class="prompt">›</span> <span class="cmd">who</span></div>
+      <div class="line"><span class="out">For anyone who needs a clear read on the pipeline — without another CRM.</span></div>
+      <div class="line blank"></div>
+
+      <!-- What -->
+      <div class="line"><span class="prompt">›</span> <span class="cmd">what</span></div>
+      <div class="line"><span class="out">Local CLI health. Five vitals: Freshness, Flow, Drop, Signal:Noise, Thread Depth.</span></div>
+      <div class="line"><span class="out">Free install → AI key → point at data → ask what’s stuck.</span></div>
+      <div class="line blank"></div>
+
+      <!-- Install -->
+      <div class="line"><span class="prompt">›</span> <span class="cmd">install</span></div>
       <div class="line" id="install">
         <span class="prompt">$</span>
         <code class="cmd" id="install-cmd">npm i -g @sonnechasser/ntrp@2.5.0</code>
         <button type="button" class="copy" id="copy-install" aria-label="Copy install command">copy</button>
       </div>
-      <div class="line"><span class="dim"># then: ntrp · Node 22+</span></div>
+      <div class="line"><span class="dim">Then run ntrp · Node 22+</span></div>
       <div class="line blank"></div>
 
-      <!-- positioning -->
-      <div class="line"><span class="out">Local pipeline health. Five vitals. Not another CRM.</span></div>
+      <!-- AI key -->
+      <div class="line"><span class="prompt">›</span> <span class="cmd">ai-key</span></div>
+      <div class="line"><span class="out">First run asks for an AI key so chat can work. That is not a payment step.</span></div>
       <div class="line blank"></div>
 
-      <!-- path -->
-      <div class="line"><span class="prompt">›</span> <span class="cmd">path</span></div>
-      <div class="line"><span class="dim">  1.</span> <span class="out">install</span></div>
-      <div class="line"><span class="dim">  2.</span> <span class="out">AI key</span> <span class="dim">— first run asks for it so chat works. not payment.</span></div>
-      <div class="line"><span class="dim">  3.</span> <span class="out">demo</span> <span class="dim">— use demo data, or drop your own exports</span></div>
-      <div class="line"><span class="dim">  4.</span> <span class="out">ask</span> <span class="dim">— “what’s stuck?” / pipeline health</span></div>
+      <!-- Local-first -->
+      <div class="line"><span class="prompt">›</span> <span class="cmd">local-first</span></div>
+      <div class="line"><span class="out">Pipeline and customer data stay on this machine. Free on npm — no license, no checkout.</span></div>
       <div class="line blank"></div>
 
-      <!-- vitals list -->
-      <div class="line"><span class="prompt">›</span> <span class="cmd">vitals</span></div>
-      <div class="line"><span class="dim">  freshness</span>     <span class="out">is the pipeline number still true</span></div>
-      <div class="line"><span class="dim">  flow rate</span>     <span class="out">how fast deals move through stages</span></div>
-      <div class="line"><span class="dim">  drop rate</span>     <span class="out">qualified leads surviving handoff</span></div>
-      <div class="line"><span class="dim">  signal:noise</span>  <span class="out">how much activity is real pipeline work</span></div>
-      <div class="line"><span class="dim">  thread depth</span>  <span class="out">contacts per deal — one leaves, deal dies</span></div>
-      <div class="line blank"></div>
-
-      <!-- sample diagnose output -->
+      <!-- vitals session -->
       <div class="line"><span class="prompt">›</span> <span class="cmd">what’s stuck?</span></div>
       <div class="line blank"></div>
       <div class="line"><span class="dim">  vital signs</span></div>
       <div class="line"><span class="dim">  ────────────────────────────────────────</span></div>
       <div class="line vital">
         <span class="bad">●</span>
-        <span class="name">freshness</span>
+        <span class="name">Freshness</span>
         <span class="bar bad">███░░░░░░░</span>
         <span class="score">29</span>
         <span class="dim note">stale deals inflate the number</span>
       </div>
       <div class="line vital">
         <span class="warn">●</span>
-        <span class="name">flow rate</span>
+        <span class="name">Flow</span>
         <span class="bar warn">█████░░░░░</span>
         <span class="score">52</span>
         <span class="dim note">deals stall mid-funnel</span>
       </div>
       <div class="line vital">
         <span class="warn">●</span>
-        <span class="name">drop rate</span>
+        <span class="name">Drop</span>
         <span class="bar warn">██████░░░░</span>
         <span class="score">61</span>
-        <span class="dim note">leak at marketing→sales handoff</span>
+        <span class="dim note">leak at handoff</span>
       </div>
       <div class="line vital">
         <span class="bad">●</span>
-        <span class="name">signal:noise</span>
+        <span class="name">Signal:Noise</span>
         <span class="bar bad">████░░░░░░</span>
         <span class="score">44</span>
         <span class="dim note">busywork crowding real work</span>
       </div>
       <div class="line vital">
         <span class="warn">●</span>
-        <span class="name">thread depth</span>
+        <span class="name">Thread Depth</span>
         <span class="bar warn">█████░░░░░</span>
         <span class="score">48</span>
         <span class="dim note">single-threaded risk</span>
       </div>
       <div class="line"><span class="dim">  ────────────────────────────────────────</span></div>
       <div class="line blank"></div>
-      <div class="line"><span class="dim">  data stays on this machine.</span></div>
-      <div class="line blank"></div>
 
       <!-- closing prompt -->
-      <div class="line">
-        <span class="prompt">$</span>
-        <code class="cmd">npm i -g @sonnechasser/ntrp@2.5.0</code>
-      </div>
       <div class="line">
         <span class="prompt">$</span>
         <span class="cursor" aria-hidden="true">█</span>

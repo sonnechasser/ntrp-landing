@@ -4,7 +4,7 @@
    ============================================================ */
 
 :root {
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Code', 'SF Mono',
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', 'SF Mono',
     Menlo, Consolas, monospace;
 
   --bg: #0a0a0a;
@@ -163,7 +163,7 @@ body {
 
 .vital .name {
   display: inline-block;
-  min-width: 13ch;
+  min-width: 14ch;
   color: var(--cmd);
 }
 
