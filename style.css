@@ -76,7 +76,7 @@ body {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
-  max-height: 0;
+  height: 0;
   overflow: hidden;
   margin: 0;
   padding: 0;
@@ -87,8 +87,13 @@ body {
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
-  max-height: none;
+  height: auto;
   overflow: visible;
+}
+
+/* Scroll room after last beat so idle prompt can settle on screen */
+.term-end {
+  height: 28vh;
 }
 
 .spacer {

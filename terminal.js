@@ -167,8 +167,26 @@
   }
 
   function isArmed(beat) {
+    var vh = window.innerHeight;
+    var armY = vh * ARM_RATIO;
+
+    // Prefer the preceding spacer: fire when its bottom (where the
+    // reply will land) crosses ~55% of the viewport.
+    var prev = beat.previousElementSibling;
+    if (prev && prev.classList.contains('spacer')) {
+      if (prev.getBoundingClientRect().bottom < armY) return true;
+    }
+
     var rect = beat.getBoundingClientRect();
-    return rect.top < window.innerHeight * ARM_RATIO;
+    if (rect.top < armY) return true;
+
+    // Last collapsed beat: at max scroll it sits at the viewport
+    // bottom and would never cross 55% — force-fire near bottom.
+    var maxScroll = document.documentElement.scrollHeight - vh;
+    if (maxScroll <= 0) return true;
+    if (window.scrollY >= maxScroll - 32) return true;
+
+    return false;
   }
 
   function tryAdvance() {
