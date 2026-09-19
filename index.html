@@ -7,7 +7,7 @@
   <meta name="description" content="Local CLI health. Five vitals. Not another CRM. npm i -g @sonnechasser/ntrp@2.5.0">
 
   <meta property="og:title" content="ntrp — local pipeline health">
-  <meta property="og:description" content="Forecast looks fine. Nobody trusts it. Local CLI health — five vitals. npm i -g @sonnechasser/ntrp@2.5.0">
+  <meta property="og:description" content="Forecast looks fine. Freshness says three deals are lying. Local CLI health — five vitals. npm i -g @sonnechasser/ntrp@2.5.0">
   <meta property="og:type" content="website">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,116 +22,118 @@
     <div class="term" id="term" role="main">
 
       <!-- boot -->
-      <div class="line"><span class="dim">ntrp 2.5.0</span></div>
-      <div class="line"><span class="dim">local pipeline health · free on npm</span></div>
-      <div class="line blank"></div>
-
-      <!-- Problem -->
-      <div class="line"><span class="prompt">›</span> <span class="cmd">problem</span></div>
-      <div class="line"><span class="out">Forecast looks fine. Nobody trusts it.</span></div>
-      <div class="line"><span class="out">Your CRM shows activity — not health.</span></div>
-      <div class="line blank"></div>
-
-      <!-- Who -->
-      <div class="line"><span class="prompt">›</span> <span class="cmd">who</span></div>
-      <div class="line"><span class="out">For anyone who needs a clear read on the pipeline — without another CRM.</span></div>
-      <div class="line blank"></div>
-
-      <!-- What -->
-      <div class="line"><span class="prompt">›</span> <span class="cmd">what</span></div>
-      <div class="line"><span class="out">Local CLI health. Five vitals: Freshness, Flow, Drop, Signal:Noise, Thread Depth.</span></div>
-      <div class="line"><span class="out">Free install → AI key → point at data → ask what’s stuck.</span></div>
-      <div class="line blank"></div>
-
-      <!-- Install -->
-      <div class="line"><span class="prompt">›</span> <span class="cmd">install</span></div>
-      <div class="line" id="install">
-        <span class="prompt">$</span>
-        <code class="cmd" id="install-cmd">npm i -g @sonnechasser/ntrp@2.5.0</code>
-        <button type="button" class="copy" id="copy-install" aria-label="Copy install command">copy</button>
+      <div class="beat" data-beat="boot" data-played="false">
+        <div class="line">
+          <span class="typed" data-type="ntrp 2.5.0 · local pipeline health · free on npm"></span><span class="cursor" hidden aria-hidden="true">█</span>
+        </div>
+        <div class="line blank"></div>
       </div>
-      <div class="line"><span class="dim">Then run ntrp · Node 22+</span></div>
-      <div class="line blank"></div>
 
-      <!-- AI key -->
-      <div class="line"><span class="prompt">›</span> <span class="cmd">ai-key</span></div>
-      <div class="line"><span class="out">First run asks for an AI key so chat can work. That is not a payment step.</span></div>
-      <div class="line blank"></div>
+      <div class="spacer" aria-hidden="true"></div>
 
-      <!-- Local-first -->
-      <div class="line"><span class="prompt">›</span> <span class="cmd">local-first</span></div>
-      <div class="line"><span class="out">Pipeline and customer data stay on this machine. Free on npm — no license, no checkout.</span></div>
-      <div class="line blank"></div>
+      <!-- problem (session reply — no › label) -->
+      <div class="beat is-pending" data-beat="problem" data-played="false">
+        <div class="line">
+          <span class="out typed" data-type="The CRM says the pipeline is fine. You don’t believe it — and you can’t prove what’s sick before the forecast meeting."></span><span class="cursor" hidden aria-hidden="true">█</span>
+        </div>
+        <div class="line blank"></div>
+      </div>
 
-      <!-- vitals session -->
-      <div class="line"><span class="prompt">›</span> <span class="cmd">what’s stuck?</span></div>
-      <div class="line blank"></div>
-      <div class="line"><span class="dim">  vital signs</span></div>
-      <div class="line"><span class="dim">  ────────────────────────────────────────</span></div>
-      <div class="line vital">
-        <span class="bad">●</span>
-        <span class="name">Freshness</span>
-        <span class="bar bad">███░░░░░░░</span>
-        <span class="score">29</span>
-        <span class="dim note">stale deals inflate the number</span>
-      </div>
-      <div class="line vital">
-        <span class="warn">●</span>
-        <span class="name">Flow</span>
-        <span class="bar warn">█████░░░░░</span>
-        <span class="score">52</span>
-        <span class="dim note">deals stall mid-funnel</span>
-      </div>
-      <div class="line vital">
-        <span class="warn">●</span>
-        <span class="name">Drop</span>
-        <span class="bar warn">██████░░░░</span>
-        <span class="score">61</span>
-        <span class="dim note">leak at handoff</span>
-      </div>
-      <div class="line vital">
-        <span class="bad">●</span>
-        <span class="name">Signal:Noise</span>
-        <span class="bar bad">████░░░░░░</span>
-        <span class="score">44</span>
-        <span class="dim note">busywork crowding real work</span>
-      </div>
-      <div class="line vital">
-        <span class="warn">●</span>
-        <span class="name">Thread Depth</span>
-        <span class="bar warn">█████░░░░░</span>
-        <span class="score">48</span>
-        <span class="dim note">single-threaded risk</span>
-      </div>
-      <div class="line"><span class="dim">  ────────────────────────────────────────</span></div>
-      <div class="line blank"></div>
+      <div class="spacer" aria-hidden="true"></div>
 
-      <!-- closing prompt -->
-      <div class="line">
-        <span class="prompt">$</span>
-        <span class="cursor" aria-hidden="true">█</span>
+      <!-- who -->
+      <div class="beat is-pending" data-beat="who" data-played="false">
+        <div class="line">
+          <span class="out typed" data-type="For the founder or sales leader who owns a messy pipeline — and still gets asked “are we going to hit number?” every week."></span><span class="cursor" hidden aria-hidden="true">█</span>
+        </div>
+        <div class="line blank"></div>
+      </div>
+
+      <div class="spacer" aria-hidden="true"></div>
+
+      <!-- what -->
+      <div class="beat is-pending" data-beat="what" data-played="false">
+        <div class="line">
+          <span class="out typed" data-type="Local CLI health. Five vitals: Freshness, Flow, Drop, Signal:Noise, Thread Depth."></span><span class="cursor" hidden aria-hidden="true">█</span>
+        </div>
+        <div class="line">
+          <span class="out typed" data-type="Free install → AI key → point at data → ask what’s stuck."></span><span class="cursor" hidden aria-hidden="true">█</span>
+        </div>
+        <div class="line blank"></div>
+      </div>
+
+      <div class="spacer" aria-hidden="true"></div>
+
+      <!-- install + free-path honesty (instant, not typewritten) -->
+      <div class="beat is-pending" data-beat="install" data-played="false">
+        <div class="line" id="install">
+          <span class="prompt">$</span>
+          <code class="cmd" id="install-cmd">npm i -g @sonnechasser/ntrp@2.5.0</code>
+          <button type="button" class="copy" id="copy-install" aria-label="Copy install command">copy</button>
+        </div>
+        <div class="line"><span class="dim">Then run ntrp · Node 22+</span></div>
+        <div class="line blank"></div>
+        <div class="line"><span class="out">First run asks for an AI key so chat can work. That is not a payment step.</span></div>
+        <div class="line blank"></div>
+        <div class="line"><span class="out">Pipeline and customer data stay on this machine. Free on npm — no license, no checkout.</span></div>
+        <div class="line blank"></div>
+      </div>
+
+      <div class="spacer spacer-lg" aria-hidden="true"></div>
+
+      <!-- one demo beat -->
+      <div class="beat is-pending" data-beat="demo" data-played="false">
+        <div class="line demo-prompt">
+          <span class="prompt">›</span>
+          <span class="cmd typed" data-type="what’s stuck?"></span><span class="cursor" hidden aria-hidden="true">█</span>
+        </div>
+        <div class="line blank"></div>
+        <div class="vital-block" hidden>
+          <div class="line vital" data-vital hidden>
+            <span class="bad">●</span>
+            <span class="name">Freshness</span>
+            <span class="score">29</span>
+            <span class="dim note">stale deals inflate the number</span>
+          </div>
+          <div class="line vital" data-vital hidden>
+            <span class="warn">●</span>
+            <span class="name">Flow</span>
+            <span class="score">52</span>
+            <span class="dim note">deals stall mid-funnel</span>
+          </div>
+          <div class="line vital" data-vital hidden>
+            <span class="warn">●</span>
+            <span class="name">Drop</span>
+            <span class="score">61</span>
+            <span class="dim note">leak at handoff</span>
+          </div>
+          <div class="line vital" data-vital hidden>
+            <span class="bad">●</span>
+            <span class="name">Signal:Noise</span>
+            <span class="score">44</span>
+            <span class="dim note">busywork crowding real work</span>
+          </div>
+          <div class="line vital" data-vital hidden>
+            <span class="warn">●</span>
+            <span class="name">Thread Depth</span>
+            <span class="score">48</span>
+            <span class="dim note">single-threaded risk</span>
+          </div>
+        </div>
+        <div class="line blank payoff-gap" hidden></div>
+        <div class="line payoff" hidden>
+          <span class="out">Forecast looks fine. Freshness says three deals are lying.</span>
+        </div>
+        <div class="line blank idle-gap" hidden></div>
+        <div class="line idle-prompt" hidden>
+          <span class="prompt">$</span>
+          <span class="cursor idle-cursor" aria-hidden="true">█</span>
+        </div>
       </div>
 
     </div>
   </div>
 
-  <script>
-    (function () {
-      const btn = document.getElementById('copy-install');
-      const cmdEl = document.getElementById('install-cmd');
-      if (!btn || !cmdEl) return;
-
-      btn.addEventListener('click', async () => {
-        const cmd = cmdEl.textContent.trim();
-        try {
-          await navigator.clipboard.writeText(cmd);
-          btn.textContent = 'ok';
-          setTimeout(() => { btn.textContent = 'copy'; }, 1200);
-        } catch (_) {
-          btn.textContent = 'select';
-        }
-      });
-    })();
-  </script>
+  <script src="./terminal.js" defer></script>
 </body>
 </html>
