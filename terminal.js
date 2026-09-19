@@ -5,10 +5,20 @@
   var VITAL_STAGGER_MS = 90;
   var ARM_RATIO = 0.55;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var finePointer = window.matchMedia('(pointer: fine)');
+  var coarsePointer = window.matchMedia('(pointer: coarse)');
 
   var beats = Array.prototype.slice.call(document.querySelectorAll('.beat'));
   var busy = false;
   var nextIdx = 0;
+  var enterRequested = false;
+  var enterHintDismissed = false;
+  var enterHint = document.getElementById('enter-hint');
+
+  function isDesktopEnterMode() {
+    // Fine pointer and not coarse — no UA sniff (SON-78).
+    return finePointer.matches && !coarsePointer.matches;
+  }
 
   function showCursor(el) {
     if (!el) return;
@@ -189,9 +199,24 @@
     return false;
   }
 
+  function syncEnterHint() {
+    if (!enterHint) return;
+    // One dim hint after boot; hide forever after first Enter (Council lock).
+    var show =
+      !enterHintDismissed &&
+      isDesktopEnterMode() &&
+      !busy &&
+      nextIdx > 0 &&
+      nextIdx < beats.length;
+    enterHint.hidden = !show;
+  }
+
   function tryAdvance() {
     if (busy) return;
-    if (nextIdx >= beats.length) return;
+    if (nextIdx >= beats.length) {
+      syncEnterHint();
+      return;
+    }
 
     var beat = beats[nextIdx];
     if (beat.getAttribute('data-played') === 'true') {
@@ -200,16 +225,62 @@
       return;
     }
 
-    // Boot always plays on load; later beats need the 55% arm line
-    if (nextIdx > 0 && !isArmed(beat)) return;
+    // Boot always plays on load; later beats need Enter (desktop) or arm (mobile)
+    if (nextIdx > 0) {
+      if (isDesktopEnterMode()) {
+        if (!enterRequested) {
+          syncEnterHint();
+          return;
+        }
+        enterRequested = false;
+        enterHintDismissed = true;
+        if (enterHint) enterHint.hidden = true;
+      } else if (!isArmed(beat)) {
+        syncEnterHint();
+        return;
+      }
+    }
 
     busy = true;
+    syncEnterHint();
     playBeat(beat, function () {
       nextIdx += 1;
       busy = false;
+      syncEnterHint();
       // Allow immediate chain if already past arm line (e.g. tall viewport)
+      // Desktop: only chains when enterRequested was set again.
       requestAnimationFrame(tryAdvance);
     });
+  }
+
+  function shouldIgnoreEnterFocus(el) {
+    if (!el || el === document.body || el === document.documentElement) return false;
+    if (el.id === 'copy-install') return true;
+    var tag = el.tagName;
+    if (tag === 'BUTTON' || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') {
+      return true;
+    }
+    if (el.isContentEditable) return true;
+    return false;
+  }
+
+  function onKeyDown(e) {
+    if (!isDesktopEnterMode()) return;
+    if (e.key !== 'Enter' && e.code !== 'NumpadEnter') return;
+    if (busy) return;
+    if (shouldIgnoreEnterFocus(document.activeElement)) return;
+    if (nextIdx >= beats.length) return;
+    // Boot still autoplays; Enter only unlocks later beats
+    if (nextIdx === 0) return;
+
+    e.preventDefault();
+    enterRequested = true;
+    tryAdvance();
+  }
+
+  function onScroll() {
+    if (isDesktopEnterMode()) return;
+    tryAdvance();
   }
 
   function revealAllImmediate() {
@@ -242,6 +313,8 @@
     });
     nextIdx = beats.length;
     busy = false;
+    enterHintDismissed = true;
+    if (enterHint) enterHint.hidden = true;
   }
 
   function bindCopy() {
@@ -278,8 +351,17 @@
       beat.classList.add('is-pending');
     });
 
-    window.addEventListener('scroll', tryAdvance, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', tryAdvance, { passive: true });
+    window.addEventListener('keydown', onKeyDown);
+    finePointer.addEventListener('change', function () {
+      syncEnterHint();
+      tryAdvance();
+    });
+    coarsePointer.addEventListener('change', function () {
+      syncEnterHint();
+      tryAdvance();
+    });
 
     tryAdvance();
   }
