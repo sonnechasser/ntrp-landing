@@ -1,0 +1,694 @@
+/* ============================================================
+   NTRP — Terminal-Native Landing Page
+   Everything is monospace. Everything is stdout.
+   No cards, no grids, no SaaS patterns.
+   ============================================================ */
+
+:root {
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --color-bg: #081014;
+  --color-panel: #0b1419;
+  --color-text: #d6cdb7;
+  --color-text-prose: #c9bc8f;
+  --color-text-muted: #a8c0c8;
+  --color-text-dim: #5a7680;
+
+  --color-teal: #3a6e7a;
+  --color-teal2: #5fa8b8;
+  --color-teal3: #7ac5d4;
+  --color-cyan: #a3c2cf;
+  --color-green: #6bad6b;
+  --color-yellow: #c4a548;
+  --color-red: #d97070;
+  --color-white: #d6cdb7;
+  --color-primary: var(--color-teal2);
+
+  --border: #2a3a42;
+  --border-muted: #172028;
+  --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-fast: 180ms;
+  --motion-medium: 420ms;
+  --transition-interactive: 180ms ease;
+  --radius-sm: 3px;
+}
+
+body {
+  position: relative;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(95, 168, 184, 0.11), transparent 36rem),
+    linear-gradient(rgba(168, 192, 200, 0.018) 1px, transparent 1px),
+    var(--color-bg);
+  background-attachment: fixed, fixed, fixed;
+  background-size: auto, 100% 4px;
+}
+
+/* ============================================================
+   INTRO OVERLAY
+   ============================================================ */
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-terminal {
+  text-align: left;
+}
+
+.intro-line {
+  font-family: var(--font-mono);
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5ch;
+}
+
+.intro-dollar {
+  color: var(--color-text-dim);
+}
+
+.intro-typed {
+  color: var(--color-text);
+}
+
+.intro-cursor {
+  display: inline-block;
+  width: 0.55ch;
+  height: 1.2em;
+  background: var(--color-teal3);
+  animation: blink 1s steps(2) infinite;
+  box-shadow: 0 0 16px rgba(122, 197, 212, 0.32);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ============================================================
+   HEADER — barely there
+   ============================================================ */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(8, 16, 20, 0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-muted);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo-word {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.logo-word span:nth-child(1) { color: var(--color-teal); }
+.logo-word span:nth-child(2) { color: var(--color-teal2); }
+.logo-word span:nth-child(3) { color: var(--color-teal3); }
+.logo-word span:nth-child(4) { color: var(--color-cyan); }
+
+.hero-logo {
+  display: inline-block;
+  text-align: left;
+  max-width: 100%;
+}
+
+.hero-logo-line {
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+  min-height: 1.1em;
+  line-height: 1.08;
+  font-size: clamp(0.7rem, 2.4vw, 1.1rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.hero-logo-line.g1 { color: #3a6e7a; }
+.hero-logo-line.g2 { color: #5a8a96; }
+.hero-logo-line.g3 { color: #7aa3b0; }
+.hero-logo-line.g4 { color: #8fb5c2; }
+.hero-logo-line.g5 { color: #a3c2cf; }
+
+.hero-version {
+  text-align: center;
+  white-space: pre;
+  word-break: normal;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.header-cta {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  transition:
+    color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease;
+}
+
+.header-cta:hover {
+  color: var(--color-teal2);
+  border-color: var(--color-teal2);
+  box-shadow: 0 0 18px rgba(95, 168, 184, 0.14);
+}
+
+/* ============================================================
+   TERMINAL SESSION — the entire page
+   ============================================================ */
+
+.term {
+  width: min(1180px, calc(100vw - 96px));
+  max-width: none;
+  margin: 0 auto;
+  padding: 48px 32px 64px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+.term-block {
+  /* No background, no border, no card. Just lines. */
+}
+
+.term-block:first-child {
+  text-align: center;
+}
+
+.term-line {
+  white-space: pre-wrap;
+  min-height: 1.7em;
+  word-break: break-word;
+}
+
+.term-line.is-hidden-line {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.term-line.is-visible-line {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.term-gap {
+  height: 32px;
+}
+
+.term-gap-lg {
+  height: 100px;
+}
+
+.term-gap-xl {
+  height: 220px;
+}
+
+.product-menu {
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid var(--border-muted);
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, rgba(11, 20, 25, 0.66), rgba(8, 16, 20, 0.32));
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.1);
+  padding: 20px 22px;
+  overflow: hidden;
+}
+
+.product-menu .term-line {
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+  color: var(--color-text-muted);
+}
+
+.menu-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 1em;
+  margin-bottom: 14px;
+}
+
+.menu-title::before,
+.menu-title::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--border);
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.95fr) 1px minmax(420px, 1.35fr);
+  gap: 34px;
+  align-items: start;
+}
+
+.menu-left,
+.menu-right {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.menu-divider {
+  align-self: stretch;
+  background: var(--border-muted);
+}
+
+.menu-kv {
+  display: grid;
+  grid-template-columns: 9ch minmax(0, 1fr);
+  gap: 1ch;
+}
+
+.menu-label {
+  display: inline-block;
+  min-width: 0;
+}
+
+.menu-command {
+  display: inline-block;
+  min-width: 10ch;
+}
+
+.menu-spacer {
+  min-height: 0.9em;
+}
+
+.menu-dock {
+  margin-top: 14px;
+  line-height: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.menu-prompt {
+  margin-top: 8px;
+}
+
+.hero-copy {
+  max-width: 88ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============================================================
+   TERMINAL COLORS — flat, just text
+   ============================================================ */
+
+.c-teal   { color: var(--color-teal); }
+.c-teal2  { color: var(--color-teal2); }
+.c-teal3  { color: var(--color-teal3); }
+.c-cyan   { color: var(--color-cyan); }
+.c-green  { color: var(--color-green); }
+.c-yellow { color: var(--color-yellow); }
+.c-red    { color: var(--color-red); }
+.c-white  { color: var(--color-white); }
+.c-muted  { color: var(--color-text-prose); }
+.c-dim    { color: var(--color-text-dim); }
+
+.bold { font-weight: 700; }
+.italic { font-style: italic; }
+
+.section-divider .c-dim {
+  color: var(--border-muted);
+}
+
+/* ============================================================
+   WAITLIST — terminal-style inline input
+   ============================================================ */
+
+.waitlist-form {
+  /* nothing fancy */
+}
+
+.waitlist-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 1.7em;
+}
+
+.waitlist-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-text-dim);
+  color: var(--color-white);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  padding: 4px 0;
+  outline: none;
+  transition:
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease;
+}
+
+.waitlist-input::placeholder {
+  color: var(--color-text-dim);
+}
+
+.waitlist-input:focus {
+  border-color: var(--color-teal2);
+  box-shadow: 0 6px 18px -18px rgba(95, 168, 184, 0.9);
+}
+
+.waitlist-btn {
+  background: transparent;
+  border: 1px solid var(--color-text-dim);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition:
+    color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease,
+    transform var(--motion-fast) ease;
+}
+
+.waitlist-btn:hover {
+  color: var(--color-teal2);
+  border-color: var(--color-teal2);
+  box-shadow: 0 0 16px rgba(95, 168, 184, 0.14);
+  transform: translateY(-1px);
+}
+
+.waitlist-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.waitlist-success {
+  /* just inline text */
+}
+
+/* ============================================================
+   CURSOR BLINK — for the final $_ prompt
+   ============================================================ */
+
+.cursor-blink {
+  animation: blink 1s steps(2) infinite;
+}
+
+/* ============================================================
+   TYPING PROMPT SECTIONS
+   ============================================================ */
+
+.term-section {
+  /* One continuous terminal stream; sections are stdout, not separate windows. */
+  position: relative;
+  padding: 0;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--motion-medium) var(--motion-ease),
+    transform var(--motion-medium) var(--motion-ease),
+    visibility var(--motion-medium) var(--motion-ease);
+}
+
+.term-section .c-muted,
+.term-block .c-muted {
+  color: var(--color-text-prose);
+}
+
+.term-section .c-dim {
+  color: var(--color-text-dim);
+}
+
+.term-section.is-waiting {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+}
+
+.term-section.is-armed,
+.term-section.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.term-section.is-active {
+  text-shadow: 0 0 16px rgba(95, 168, 184, 0.08);
+}
+
+.term-prompt {
+  min-height: 1.7em;
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding-bottom: 4px;
+  color: var(--color-text);
+  text-shadow: 0 0 18px rgba(95, 168, 184, 0.08);
+}
+
+.term-section.is-armed:not(.is-active):not(.is-complete) .term-output {
+  display: none;
+}
+
+.term-section.is-armed .term-prompt {
+  margin-bottom: clamp(20px, 4vh, 44px);
+}
+
+.term-prompt-text {
+  /* filled by JS typing */
+}
+
+.term-prompt-cursor {
+  color: var(--color-teal3);
+  animation: blink 1s steps(2) infinite;
+  font-weight: 400;
+  text-shadow: 0 0 14px rgba(122, 197, 212, 0.46);
+}
+
+.term-output {
+  /* lines inside are revealed after typing completes */
+}
+
+.term-output .term-line {
+  /* initially hidden by JS */
+}
+
+.term-line.section-divider {
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+  min-height: 0;
+  color: var(--border-muted);
+}
+
+.term-section::before {
+  content: none;
+}
+
+
+/* ============================================================
+   VITAL SIGNS & METRICS — tabular data rows
+   ============================================================ */
+
+.vital-name {
+  display: inline-block;
+  min-width: 16ch;
+  margin-right: 1ch;
+}
+
+.vital-bar {
+  /* progress bars inline on desktop */
+}
+
+.metric-name {
+  display: inline-block;
+  min-width: 24ch;
+  margin-right: 1ch;
+}
+
+/* ============================================================
+   FOOTER — barely there
+   ============================================================ */
+
+.site-footer {
+  border-top: 1px solid var(--border-muted);
+  padding: 16px 24px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-dim);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: min(1180px, calc(100vw - 96px));
+  max-width: none;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .term,
+  .site-footer {
+    width: min(100%, calc(100vw - 40px));
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .menu-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .menu-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .term {
+    width: 100%;
+    font-size: 12px;
+    padding: 32px 20px 48px;
+  }
+
+  .term-line {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .site-header {
+    padding: 10px 16px;
+  }
+
+  .header-cta {
+    font-size: 11px;
+    padding: 5px 12px;
+  }
+
+  .logo-img {
+    height: 18px;
+  }
+
+  .logo-word {
+    font-size: 12px;
+  }
+
+  .hero-logo-line {
+    font-size: clamp(0.56rem, 2.5vw, 0.78rem);
+    letter-spacing: -0.04em;
+  }
+
+  .hero-version {
+    font-size: 10px;
+  }
+
+  .product-menu {
+    margin-left: -8px;
+    margin-right: -8px;
+    padding: 12px;
+  }
+
+  .product-menu .term-line {
+    font-size: 11px;
+  }
+
+  .menu-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .menu-divider {
+    display: none;
+  }
+
+  .menu-command {
+    min-width: 9ch;
+  }
+
+  .term-gap-lg {
+    height: 72px;
+  }
+
+  .term-gap-xl {
+    height: 160px;
+  }
+
+  /* Hide progress bars, pipe dividers, and context text on mobile */
+  .vital-bar { display: none; }
+  .vital-pipe { display: none; }
+  .vital-desc { display: none; }
+  .metric-ctx { display: none; }
+
+  .vital-name {
+    min-width: auto;
+    display: inline;
+    margin-right: 0;
+  }
+
+  /* In the intro block (not the data rows), stack name + description */
+  .term-block .vital-name {
+    display: block;
+    margin-bottom: 0;
+  }
+
+  .metric-name {
+    min-width: 15ch;
+  }
+
+  .waitlist-input {
+    font-size: 12px;
+  }
+
+  .waitlist-btn {
+    font-size: 12px;
+  }
+
+  .site-footer {
+    width: 100%;
+    padding: 16px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    background-attachment: scroll;
+  }
+
+  .term-line.is-hidden-line,
+  .term-section.is-waiting {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+}

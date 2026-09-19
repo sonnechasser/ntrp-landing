@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NTRP — Local pipeline health on your machine</title>
+  <meta name="description" content="NTRP is a free local GTM diagnostic. Five vitals on your pipeline — not another CRM. Install with npm, add your AI key, drop in data.">
+
+  <meta property="og:title" content="NTRP — Local pipeline health on your machine">
+  <meta property="og:description" content="Free local GTM diagnostic. Five vitals. Not another CRM. npm i -g @sonnechasser/ntrp@2.5.0">
+  <meta property="og:type" content="website">
+
+  <style>
+    html, body { background: #081014; margin: 0; }
+    #page-wrap { display: none; opacity: 0; }
+    #intro-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #081014;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+    }
+    #intro-overlay .intro-dollar { color: #5a7680; }
+    #intro-overlay .intro-cursor { display: inline-block; width: 0.6ch; height: 1.2em; background: #7ac5d4; }
+    .install-block {
+      border: 1px solid #1e3a42;
+      background: #0b161b;
+      padding: 1rem 1.1rem;
+      margin: 0.75rem 0 0.25rem;
+      border-radius: 4px;
+    }
+    .install-cmd {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .install-cmd code {
+      font-family: 'JetBrains Mono', monospace;
+      color: #e8f4f7;
+      font-size: 0.95rem;
+      word-break: break-all;
+    }
+    .copy-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: #081014;
+      background: #7ac5d4;
+      border: none;
+      padding: 0.35rem 0.7rem;
+      cursor: pointer;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+    .copy-btn:hover { background: #9ad7e2; }
+    .header-cta { text-decoration: none; }
+  </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./base.css">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' fill='%235fa8b8' font-family='monospace' font-weight='800' font-size='22'>N</text></svg>">
+</head>
+<body>
+
+  <div class="intro-overlay" id="intro-overlay">
+    <div class="intro-terminal">
+      <div class="intro-line">
+        <span class="intro-dollar">$</span>
+        <span class="intro-typed" id="intro-typed"></span>
+        <span class="intro-cursor" id="intro-cursor"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-wrap" id="page-wrap" style="display:none;opacity:0">
+
+  <header class="site-header">
+    <a href="#" class="logo" aria-label="NTRP">
+      <span class="logo-word" aria-hidden="true"><span>N</span><span>T</span><span>R</span><span>P</span></span>
+    </a>
+    <a href="#install" class="header-cta">install</a>
+  </header>
+
+  <main class="term">
+
+    <div class="term-block" id="terminal-demo">
+      <div class="hero-logo" aria-hidden="true">
+        <div class="term-line hero-logo-line g1"> ███╗   ██╗ ████████╗ ██████╗  ██████╗ </div>
+        <div class="term-line hero-logo-line g2"> ████╗  ██║ ╚══██╔══╝ ██╔══██╗ ██╔══██╗</div>
+        <div class="term-line hero-logo-line g3"> ██╔██╗ ██║    ██║    ██████╔╝ ██████╔╝</div>
+        <div class="term-line hero-logo-line g4"> ██║╚██╗██║    ██║    ██╔══██╗ ██╔═══╝ </div>
+        <div class="term-line hero-logo-line g5"> ██║ ╚████║    ██║    ██║  ██║ ██║     </div>
+        <div class="term-line hero-logo-line g5"> ╚═╝  ╚═══╝    ╚═╝    ╚═╝  ╚═╝ ╚═╝     </div>
+      </div>
+      <div class="term-line hero-version"><span class="c-dim">╭──────────── Local pipeline health  ·  free on npm ────────────╮</span></div>
+    </div>
+
+    <div class="term-gap"></div>
+
+    <div class="term-block hero-copy" id="install">
+      <div class="term-line"><span class="c-white bold">Local pipeline health check.</span></div>
+      <div class="term-line"><span class="c-teal2 bold">Five vitals. Not another CRM.</span></div>
+      <div class="term-line"></div>
+      <div class="term-line"><span class="c-muted">NTRP runs on your machine. Score Freshness, Flow, Drop, Signal:Noise, and Thread Depth — then ask what to do next. Free on npm. First run asks for your AI key so chat can work.</span></div>
+      <div class="install-block">
+        <div class="term-line" style="margin-bottom:0.5rem"><span class="c-dim">Install</span></div>
+        <div class="install-cmd">
+          <code id="install-cmd">npm i -g @sonnechasser/ntrp@2.5.0</code>
+          <button type="button" class="copy-btn" id="copy-install" aria-label="Copy install command">copy</button>
+        </div>
+        <div class="term-line" style="margin-top:0.65rem"><span class="c-dim">Then run </span><span class="c-teal2">ntrp</span><span class="c-dim"> · Node 22+</span></div>
+      </div>
+    </div>
+
+    <div class="term-gap-xl"></div>
+
+    <div class="term-section" data-cmd="what is ntrp?">
+      <div class="term-prompt">
+        <span class="c-teal2">›</span> <span class="c-white term-prompt-text"></span><span class="term-prompt-cursor">▌</span>
+      </div>
+      <div class="term-output">
+        <div class="term-line"></div>
+        <div class="term-line"><span class="c-teal2 bold">What you get</span></div>
+        <div class="term-line section-divider"><span class="c-dim">────────────────────────────────────────────────────────</span></div>
+        <div class="term-line"></div>
+        <div class="term-line"><span class="c-teal2">1.</span> <span class="c-white bold">Install</span></div>
+        <div class="term-line"><span class="c-muted">   One npm command. No signup. No license key. No checkout.</span></div>
+        <div class="term-line"></div>
+        <div class="term-line"><span class="c-teal2">2.</span> <span class="c-white bold">Add your AI key</span></div>
+        <div class="term-line"><span class="c-muted">   First run asks for a provider key so chat and analysis can run. That is not a payment step.</span></div>
+        <div class="term-line"></div>
+        <div class="term-line"><span class="c-teal2">3.</span> <span class="c-white bold">Point at pipeline data</span></div>
+        <div class="term-line"><span class="c-muted">   Drop local exports. Data stays on this machine. Ask: how healthy is the pipeline? what should I do next?</span></div>
+      </div>
+    </div>
+
+    <div class="term-gap-lg"></div>
+
+    <div class="term-block">
+      <div class="term-line"><span class="c-teal2 bold">Five vitals</span></div>
+      <div class="term-line section-divider"><span class="c-dim">────────────────────────────────────────────────────────</span></div>
+      <div class="term-line"></div>
+      <div class="term-line"><span class="c-muted">Read in order: Freshness (is the number true?) → Flow + Drop (stuck / handoff) → Signal + Thread (busywork / thin deals).</span></div>
+      <div class="term-line"></div>
+      <div class="term-line">  <span class="c-white bold vital-name">Freshness</span><span class="c-muted">is the pipeline number still true</span></div>
+      <div class="term-line">  <span class="c-white bold vital-name">Flow</span><span class="c-muted">how fast deals move through stages</span></div>
+      <div class="term-line">  <span class="c-white bold vital-name">Drop</span><span class="c-muted">how many qualified leads survive handoff</span></div>
+      <div class="term-line">  <span class="c-white bold vital-name">Signal:Noise</span><span class="c-muted">how much activity is real pipeline work</span></div>
+      <div class="term-line">  <span class="c-white bold vital-name">Thread Depth</span><span class="c-muted">contacts per deal — one leaves, deal dies</span></div>
+    </div>
+
+    <div class="term-gap-lg"></div>
+
+    <div class="term-section" data-cmd="ntrp diagnose">
+      <div class="term-prompt">
+        <span class="c-teal2">›</span> <span class="c-white term-prompt-text"></span><span class="term-prompt-cursor">▌</span>
+      </div>
+      <div class="term-output">
+        <div class="term-line"></div>
+        <div class="term-line"><span class="c-teal2 bold">  Vital Signs</span></div>
+        <div class="term-line section-divider"><span class="c-dim">  ──────────────────────────────────────────────────────────────</span></div>
+        <div class="term-line"></div>
+        <div class="term-line vital-row">  <span class="c-red">●</span> <span class="c-white vital-name">Freshness</span><span class="c-red vital-bar">█▓█▓░░░░░░░░░░</span>  <span class="c-white bold vital-score">29</span>  <span class="c-dim vital-pipe">│</span>  <span class="c-dim vital-desc">stale deals inflate the number</span></div>
+        <div class="term-line vital-row">  <span class="c-yellow">●</span> <span class="c-white vital-name">Flow</span><span class="c-yellow vital-bar">█▓█▓█▓█░░░░░░░</span>  <span class="c-white bold vital-score">52</span>  <span class="c-dim vital-pipe">│</span>  <span class="c-dim vital-desc">deals stall mid-funnel</span></div>
+        <div class="term-line vital-row">  <span class="c-yellow">●</span> <span class="c-white vital-name">Drop</span><span class="c-yellow vital-bar">█▓█▓█▓█▓█░░░░░</span>  <span class="c-white bold vital-score">61</span>  <span class="c-dim vital-pipe">│</span>  <span class="c-dim vital-desc">leak at marketing→sales handoff</span></div>
+        <div class="term-line vital-row">  <span class="c-red">●</span> <span class="c-white vital-name">Signal:Noise</span><span class="c-red vital-bar">█▓█▓█▓░░░░░░░░</span>  <span class="c-white bold vital-score">44</span>  <span class="c-dim vital-pipe">│</span>  <span class="c-dim vital-desc">busywork crowding real work</span></div>
+        <div class="term-line vital-row">  <span class="c-yellow">●</span> <span class="c-white vital-name">Thread Depth</span><span class="c-yellow vital-bar">█▓█▓█▓█░░░░░░░</span>  <span class="c-white bold vital-score">48</span>  <span class="c-dim vital-pipe">│</span>  <span class="c-dim vital-desc">single-threaded risk</span></div>
+        <div class="term-line"></div>
+        <div class="term-line section-divider"><span class="c-dim">  ──────────────────────────────────────────────────────────────</span></div>
+        <div class="term-line"></div>
+        <div class="term-line"><span class="c-dim">Then ask in chat:</span> <span class="c-teal2">what should I do next?</span></div>
+      </div>
+    </div>
+
+    <div class="term-gap-lg"></div>
+
+    <div class="term-block">
+      <div class="term-line"><span class="c-teal2 bold">Local-first</span></div>
+      <div class="term-line section-divider"><span class="c-dim">────────────────────────────────────────────────────────</span></div>
+      <div class="term-line"></div>
+      <div class="term-line"><span class="c-muted">Pipeline and customer data stay on this machine. Strategy write-ups can sync to a folder you control if you turn that on. Free forever on npm — no license gate.</span></div>
+    </div>
+
+    <div class="term-gap-lg"></div>
+
+    <!-- Marketing slot — Launch/Copywriter fill later; keep empty structure -->
+    <div class="term-block" id="marketing">
+      <div class="term-line"><span class="c-dim"># marketing</span></div>
+      <div class="term-line"><span class="c-dim">Section reserved for Launch copy.</span></div>
+    </div>
+
+    <div class="term-gap-lg"></div>
+
+    <div class="term-block">
+      <div class="term-line"><span class="c-muted">Not another CRM. A diagnostic that runs locally and answers in plain English.</span></div>
+      <div class="term-line"></div>
+      <div class="term-line"><span class="c-teal2">›</span> <span class="c-white">npm i -g @sonnechasser/ntrp@2.5.0</span></div>
+      <div class="term-line"><span class="c-teal2">›</span> <span class="c-white cursor-blink">_</span></div>
+    </div>
+
+    <div class="term-gap"></div>
+
+  </main>
+
+  <footer class="site-footer">
+    <span>NTRP</span>
+    <span class="c-dim">free on npm · @sonnechasser/ntrp@2.5.0</span>
+  </footer>
+
+  </div>
+
+  <script>
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const reduceMotion = motionQuery.matches;
+    const ease = 'cubic-bezier(0.16, 1, 0.3, 1)';
+    const timing = {
+      introStart: 520,
+      introType: 170,
+      introHold: 420,
+      introExit: 640,
+      pageFade: 500,
+      commandType: 42,
+      longCommandType: 30,
+      commandPause: 220,
+      lineStagger: 34,
+      lineReveal: 260,
+      blockDonePad: 100,
+      sectionDonePad: 120,
+    };
+
+    let animQueue = [];
+    let currentIdx = -1;
+    let currentBusy = false;
+    let sectionObserver = null;
+
+    function prepareSections() {
+      const allElements = Array.from(document.querySelectorAll('.term-block, .term-section'));
+      allElements.forEach((el) => {
+        el._animDone = false;
+        if (el.classList.contains('term-section')) {
+          el.classList.add('is-waiting');
+          el.classList.remove('is-armed', 'is-visible', 'is-active', 'is-complete');
+          const textEl = el.querySelector('.term-prompt-text');
+          const cursorEl = el.querySelector('.term-prompt-cursor');
+          if (textEl) textEl.textContent = '';
+          if (cursorEl) { cursorEl.style.opacity = '0'; cursorEl.style.display = 'inline'; }
+          el.querySelectorAll('.term-output .term-line').forEach(prepareLine);
+        } else {
+          el.querySelectorAll('.term-line').forEach(prepareLine);
+        }
+      });
+      animQueue = allElements;
+    }
+
+    function prepareLine(line) {
+      line.classList.add('is-hidden-line');
+      line.classList.remove('is-visible-line');
+      line.style.transition = `opacity ${timing.lineReveal}ms ease-out, transform ${timing.lineReveal}ms ${ease}`;
+    }
+
+    function revealLine(line) {
+      line.classList.remove('is-hidden-line');
+      line.classList.add('is-visible-line');
+    }
+
+    function revealPage(pageWrap) {
+      pageWrap.style.display = 'block';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          pageWrap.style.transition = `opacity ${timing.pageFade}ms ease`;
+          pageWrap.style.opacity = '1';
+        });
+      });
+    }
+
+    function revealAllImmediately() {
+      animQueue.forEach((el) => {
+        el._animDone = true;
+        if (el.classList.contains('term-section')) {
+          const cmd = el.getAttribute('data-cmd') || '';
+          const textEl = el.querySelector('.term-prompt-text');
+          const cursorEl = el.querySelector('.term-prompt-cursor');
+          if (textEl) textEl.textContent = cmd;
+          if (cursorEl) cursorEl.style.display = 'none';
+          el.classList.remove('is-waiting', 'is-armed', 'is-active');
+          el.classList.add('is-visible', 'is-complete');
+        }
+        el.querySelectorAll('.term-line').forEach(revealLine);
+      });
+      currentIdx = animQueue.length - 1;
+      currentBusy = false;
+    }
+
+    function startIntro() {
+      const overlay = document.getElementById('intro-overlay');
+      const typed = document.getElementById('intro-typed');
+      const cursor = document.getElementById('intro-cursor');
+      const pageWrap = document.getElementById('page-wrap');
+      const word = 'ntrp';
+      prepareSections();
+
+      if (reduceMotion) {
+        typed.textContent = word;
+        cursor.style.display = 'none';
+        overlay.remove();
+        pageWrap.style.display = 'block';
+        pageWrap.style.transition = 'none';
+        pageWrap.style.opacity = '1';
+        revealAllImmediately();
+        return;
+      }
+
+      let i = 0;
+      setTimeout(function typeChar() {
+        if (i < word.length) {
+          typed.textContent += word[i];
+          i++;
+          setTimeout(typeChar, timing.introType);
+          return;
+        }
+        setTimeout(() => {
+          cursor.style.display = 'none';
+          overlay.style.transition = `transform ${timing.introExit}ms ${ease}, opacity ${timing.pageFade}ms ease`;
+          overlay.style.transform = 'translateY(-100%)';
+          overlay.style.opacity = '0';
+          revealPage(pageWrap);
+          setTimeout(() => {
+            overlay.remove();
+            startSectionAnimations();
+          }, timing.introExit);
+        }, timing.introHold);
+      }, timing.introStart);
+    }
+
+    function startSectionAnimations() {
+      if (!animQueue.length) return;
+      const heroBlocks = [];
+      for (const el of animQueue) {
+        if (heroBlocks.length >= 2) break;
+        if (el.classList.contains('term-block')) heroBlocks.push(el);
+        else break;
+      }
+      currentBusy = true;
+      function revealHero(idx) {
+        if (idx >= heroBlocks.length) {
+          currentIdx = heroBlocks.length - 1;
+          currentBusy = false;
+          setupSectionObserver();
+          window.addEventListener('scroll', onScroll, { passive: true });
+          window.addEventListener('resize', onScroll, { passive: true });
+          tryAdvance();
+          return;
+        }
+        revealBlock(heroBlocks[idx], () => {
+          heroBlocks[idx]._animDone = true;
+          revealHero(idx + 1);
+        });
+      }
+      revealHero(0);
+    }
+
+    function setupSectionObserver() {
+      if (!('IntersectionObserver' in window)) return;
+      sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !currentBusy) tryAdvance();
+        });
+      }, { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0 });
+      animQueue.forEach((el) => sectionObserver.observe(el));
+    }
+
+    function onScroll() { tryAdvance(); }
+
+    function shouldArm(nextIdx) {
+      const el = animQueue[nextIdx];
+      if (!el.classList.contains('term-section')) return false;
+      if (el.classList.contains('is-armed')) return false;
+      const rect = el.getBoundingClientRect();
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const nearBottom = window.scrollY >= maxScroll - 80;
+      return rect.top < window.innerHeight * 0.92 || nearBottom;
+    }
+
+    function armSection(section) {
+      const cursorEl = section.querySelector('.term-prompt-cursor');
+      section.classList.remove('is-waiting');
+      section.classList.add('is-armed');
+      if (cursorEl) {
+        cursorEl.style.opacity = '1';
+        cursorEl.style.display = 'inline';
+        cursorEl.style.animation = 'blink 1s steps(2) infinite';
+      }
+    }
+
+    function shouldFire(nextIdx) {
+      if (nextIdx <= 1) return true;
+      const el = animQueue[nextIdx];
+      const prevEl = animQueue[nextIdx - 1];
+      const rect = el.getBoundingClientRect();
+      const triggerLine = el.classList.contains('term-section') ? 0.42 : 0.86;
+      if (rect.top < window.innerHeight * triggerLine) return true;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const nearBottom = window.scrollY >= maxScroll - 50;
+      if (nearBottom && rect.top < window.innerHeight * 0.9) return true;
+      if (prevEl) return prevEl.getBoundingClientRect().bottom < window.innerHeight * 0.12;
+      return false;
+    }
+
+    function tryAdvance() {
+      if (currentBusy) return;
+      const nextIdx = currentIdx + 1;
+      if (nextIdx >= animQueue.length) return;
+      const el = animQueue[nextIdx];
+      if (el._animDone) { currentIdx = nextIdx; tryAdvance(); return; }
+      if (el.classList.contains('term-section') && shouldArm(nextIdx)) armSection(el);
+      if (!shouldFire(nextIdx)) return;
+      currentIdx = nextIdx;
+      currentBusy = true;
+      if (el.classList.contains('term-section')) {
+        activateSection(el, () => {
+          el._animDone = true;
+          currentBusy = false;
+          requestAnimationFrame(() => tryAdvance());
+        });
+      } else {
+        revealBlock(el, () => {
+          el._animDone = true;
+          currentBusy = false;
+          requestAnimationFrame(() => tryAdvance());
+        });
+      }
+    }
+
+    function revealBlock(block, onDone) {
+      const lines = block.querySelectorAll('.term-line');
+      if (!lines.length) { onDone(); return; }
+      lines.forEach((l, i) => setTimeout(() => revealLine(l), i * timing.lineStagger));
+      setTimeout(onDone, lines.length * timing.lineStagger + timing.blockDonePad);
+    }
+
+    function activateSection(section, onDone) {
+      const cmd = section.getAttribute('data-cmd') || '';
+      const textEl = section.querySelector('.term-prompt-text');
+      const cursorEl = section.querySelector('.term-prompt-cursor');
+      const output = section.querySelector('.term-output');
+      if (!textEl || !cursorEl || !output) { onDone(); return; }
+      const lines = output.querySelectorAll('.term-line');
+      section.classList.remove('is-waiting');
+      section.classList.add('is-armed', 'is-visible', 'is-active');
+      textEl.textContent = '';
+      cursorEl.style.opacity = '1';
+      cursorEl.style.display = 'inline';
+      cursorEl.style.animation = 'blink 1s steps(2) infinite';
+      let i = 0;
+      const speed = cmd.length > 30 ? timing.longCommandType : timing.commandType;
+      function typeNext() {
+        if (i < cmd.length) {
+          textEl.textContent += cmd[i];
+          i++;
+          setTimeout(typeNext, speed);
+        } else {
+          setTimeout(() => {
+            cursorEl.style.display = 'none';
+            lines.forEach((l, idx) => setTimeout(() => revealLine(l), idx * timing.lineStagger));
+            setTimeout(() => {
+              section.classList.remove('is-active');
+              section.classList.add('is-complete');
+              onDone();
+            }, lines.length * timing.lineStagger + timing.sectionDonePad);
+          }, timing.commandPause);
+        }
+      }
+      setTimeout(typeNext, timing.commandPause);
+    }
+
+    document.getElementById('copy-install').addEventListener('click', async () => {
+      const cmd = document.getElementById('install-cmd').textContent.trim();
+      const btn = document.getElementById('copy-install');
+      try {
+        await navigator.clipboard.writeText(cmd);
+        btn.textContent = 'copied';
+        setTimeout(() => { btn.textContent = 'copy'; }, 1400);
+      } catch (_) {
+        btn.textContent = 'select+copy';
+      }
+    });
+
+    startIntro();
+  </script>
+</body>
+</html>
