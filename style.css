@@ -93,30 +93,30 @@ body {
 
 /* Scroll room after last beat so idle prompt can settle on screen */
 .term-end {
-  height: 10vh;
+  height: 16vh;
 }
 
-/* SON-79: tight REPL gaps — Enter steps, not page-jumps */
+/* Default: enough scroll-arm room (mobile / coarse / unknown pointer) */
 .spacer {
-  height: clamp(1.25rem, 4vh, 2.5rem);
+  height: clamp(18vh, 22vh, 28vh);
 }
 
 .spacer-lg {
-  height: clamp(1.75rem, 5vh, 3rem);
+  height: clamp(22vh, 26vh, 32vh);
 }
 
-/* Mobile still needs some scroll room to arm one beat at a time */
-@media (pointer: coarse) {
+/* SON-79: desktop Enter = tight REPL gaps, not page-jumps */
+@media (pointer: fine) and (hover: hover) {
   .spacer {
-    height: clamp(18vh, 22vh, 28vh);
+    height: clamp(1.25rem, 4vh, 2.5rem);
   }
 
   .spacer-lg {
-    height: clamp(22vh, 26vh, 32vh);
+    height: clamp(1.75rem, 5vh, 3rem);
   }
 
   .term-end {
-    height: 16vh;
+    height: 10vh;
   }
 }
 
