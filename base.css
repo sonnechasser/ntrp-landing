@@ -1,4 +1,4 @@
-/* base.css — mandatory reset */
+/* base.css — minimal reset for static terminal landing */
 *,
 *::before,
 *::after {
@@ -11,21 +11,17 @@ html {
   -moz-text-size-adjust: none;
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
-  hanging-punctuation: first last;
-  scroll-padding-top: var(--space-16);
+  scroll-padding-top: 1rem;
 }
 
 body {
   min-height: 100dvh;
-  line-height: 1.6;
-  font-family: var(--font-body, sans-serif);
-  font-size: var(--text-base);
-  color: var(--color-text);
-  background-color: var(--color-bg);
+  line-height: 1.55;
+  font-family: var(--font-body, monospace);
+  font-size: var(--text-base, 14px);
+  color: var(--color-text, #c8c8c8);
+  background-color: var(--color-bg, #0a0a0a);
 }
 
 img,
@@ -37,43 +33,24 @@ svg {
   max-width: 100%;
   height: auto;
 }
-ul[role='list'],
-ol[role='list'] {
-  list-style: none;
-}
-input,
-button,
-textarea,
-select {
+
+button {
   font: inherit;
   color: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  text-wrap: balance;
-  line-height: 1.15;
-}
-p,
-li,
-figcaption {
-  text-wrap: pretty;
-  max-width: 72ch;
-}
-
-::selection {
-  background: oklch(from var(--color-primary) l c h / 0.25);
-  color: var(--color-text);
+a,
+button,
+[role='button'] {
+  transition: none;
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 3px;
-  border-radius: var(--radius-sm);
+  outline: 1px solid var(--color-primary, #33b074);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -85,30 +62,6 @@ figcaption {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
-
-button {
-  cursor: pointer;
-  background: none;
-  border: none;
-}
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-a,
-button,
-[role='button'],
-[role='link'],
-input,
-textarea,
-select {
-  transition:
-    color var(--transition-interactive),
-    background var(--transition-interactive),
-    border-color var(--transition-interactive),
-    box-shadow var(--transition-interactive);
 }
 
 .sr-only {
