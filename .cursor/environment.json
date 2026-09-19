@@ -1,0 +1,16 @@
+{
+  "name": "ntrp-landing",
+  "install": "test -f index.html",
+  "terminals": [
+    {
+      "name": "static-server",
+      "command": "python3 -m http.server 8000 --bind 0.0.0.0"
+    }
+  ],
+  "ports": [
+    {
+      "name": "site",
+      "port": 8000
+    }
+  ]
+}
