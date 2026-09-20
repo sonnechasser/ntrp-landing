@@ -13,11 +13,15 @@
   var nextIdx = 0;
   var enterRequested = false;
   var enterHintDismissed = false;
+  var advanceViaEnter = false;
+  var suppressScrollUntil = 0;
   var enterHint = document.getElementById('enter-hint');
 
   function isDesktopEnterMode() {
-    // Fine pointer and not coarse — no UA sniff (SON-78).
-    return finePointer.matches && !coarsePointer.matches;
+    // Default to keyboard/Enter unless a coarse (touch) pointer is present.
+    // Covers real desktops, plus headless/embedded browsers that report no
+    // pointer capabilities at all. Touch devices fall through to scroll.
+    return !coarsePointer.matches;
   }
 
   function showCursor(el) {
@@ -78,14 +82,28 @@
     next();
   }
 
-  function revealInstall(beat, done) {
-    beat.classList.remove('is-pending');
-    beat.classList.add('is-active');
-    hideAllCursors(beat);
-    beat.classList.remove('is-active');
-    beat.classList.add('is-done');
-    beat.setAttribute('data-played', 'true');
-    done();
+  // Command beat: type the command, then print its output block + copy button.
+  function playCmd(beat, done) {
+    var cmdSpan = beat.querySelector('.cmd-line .typed');
+    var cmdCursor = beat.querySelector('.cmd-line .cursor');
+    var output = beat.querySelector('.output');
+    var copyBtn = beat.querySelector('.copy');
+    var text = cmdSpan ? (cmdSpan.getAttribute('data-type') || '') : '';
+
+    function reveal() {
+      if (output) output.hidden = false;
+      if (copyBtn) copyBtn.hidden = false;
+      done();
+    }
+
+    if (!cmdSpan) {
+      reveal();
+      return;
+    }
+
+    typeText(cmdSpan, text, cmdCursor, function () {
+      setTimeout(reveal, reduceMotion ? 0 : 140);
+    });
   }
 
   function staggerVitals(beat, done) {
@@ -122,6 +140,7 @@
         vitals[i].hidden = false;
         vitals[i].classList.add('is-shown');
         i += 1;
+        keepInView();
         setTimeout(showNext, VITAL_STAGGER_MS);
         return;
       }
@@ -134,6 +153,7 @@
           var idleCur = idle.querySelector('.cursor');
           if (idleCur) idleCur.hidden = false;
         }
+        keepInView();
         done();
       }, 120);
     }
@@ -165,8 +185,8 @@
       done();
     }
 
-    if (kind === 'install') {
-      revealInstall(beat, finish);
+    if (kind === 'cmd') {
+      playCmd(beat, finish);
       return;
     }
     if (kind === 'demo') {
@@ -174,6 +194,25 @@
       return;
     }
     typeLines(beat, finish);
+  }
+
+  // Desktop advances via Enter, so keep freshly revealed content in view
+  // above the pinned status bar. Mobile arms via the user's own scroll.
+  function keepInView() {
+    if (reduceMotion) return;
+    // Auto-follow only when the reveal was driven by an explicit Enter press.
+    // Never on the initial boot autoplay, and never for touch users who
+    // control their own scroll.
+    if (!advanceViaEnter) return;
+    // Suppress scroll-arming briefly so the programmatic scroll doesn't
+    // immediately fire the next beat in scroll mode.
+    suppressScrollUntil = Date.now() + 700;
+    requestAnimationFrame(function () {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+      });
+    });
   }
 
   function isArmed(beat) {
@@ -201,7 +240,7 @@
 
   function syncEnterHint() {
     if (!enterHint) return;
-    // One dim hint after boot; hide forever after first Enter (Council lock).
+    // One dim hint after boot; hide forever after first Enter.
     var show =
       !enterHintDismissed &&
       isDesktopEnterMode() &&
@@ -225,19 +264,23 @@
       return;
     }
 
-    // Boot always plays on load; later beats need Enter (desktop) or arm (mobile)
+    // Boot always plays on load. After that: an explicit Enter advances in any
+    // pointer mode (keyboard intent wins), desktop otherwise waits for Enter,
+    // and touch/coarse pointers arm the next beat on scroll.
     if (nextIdx > 0) {
-      if (isDesktopEnterMode()) {
-        if (!enterRequested) {
-          syncEnterHint();
-          return;
-        }
+      if (enterRequested) {
         enterRequested = false;
         enterHintDismissed = true;
+        advanceViaEnter = true;
         if (enterHint) enterHint.hidden = true;
+      } else if (isDesktopEnterMode()) {
+        syncEnterHint();
+        return;
       } else if (!isArmed(beat)) {
         syncEnterHint();
         return;
+      } else {
+        advanceViaEnter = false;
       }
     }
 
@@ -247,15 +290,14 @@
       nextIdx += 1;
       busy = false;
       syncEnterHint();
-      // Allow immediate chain if already past arm line (e.g. tall viewport)
-      // Desktop: only chains when enterRequested was set again.
+      keepInView();
+      // Allow immediate chain if already past arm line (e.g. tall viewport).
       requestAnimationFrame(tryAdvance);
     });
   }
 
   function shouldIgnoreEnterFocus(el) {
     if (!el || el === document.body || el === document.documentElement) return false;
-    if (el.id === 'copy-install') return true;
     var tag = el.tagName;
     if (tag === 'BUTTON' || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') {
       return true;
@@ -265,12 +307,11 @@
   }
 
   function onKeyDown(e) {
-    if (!isDesktopEnterMode()) return;
     if (e.key !== 'Enter' && e.code !== 'NumpadEnter') return;
     if (busy) return;
     if (shouldIgnoreEnterFocus(document.activeElement)) return;
     if (nextIdx >= beats.length) return;
-    // Boot still autoplays; Enter only unlocks later beats
+    // Boot still autoplays; Enter only unlocks later beats.
     if (nextIdx === 0) return;
 
     e.preventDefault();
@@ -280,6 +321,7 @@
 
   function onScroll() {
     if (isDesktopEnterMode()) return;
+    if (Date.now() < suppressScrollUntil) return;
     tryAdvance();
   }
 
@@ -300,6 +342,13 @@
         }
       });
 
+      beat.querySelectorAll('.output[hidden]').forEach(function (o) {
+        o.hidden = false;
+      });
+      beat.querySelectorAll('.copy[hidden]').forEach(function (b) {
+        b.hidden = false;
+      });
+
       var block = beat.querySelector('.vital-block');
       if (block) block.hidden = false;
       beat.querySelectorAll('[data-vital]').forEach(function (v) {
@@ -317,23 +366,30 @@
     if (enterHint) enterHint.hidden = true;
   }
 
-  function bindCopy() {
-    var btn = document.getElementById('copy-install');
-    var cmdEl = document.getElementById('install-cmd');
-    if (!btn || !cmdEl) return;
+  function copyCommand(btn) {
+    var container = btn.closest('.cmd-line') || btn.closest('.status-bar');
+    var cmdEl = container ? container.querySelector('.cmd') : null;
+    if (!cmdEl) return;
+    var cmd = cmdEl.textContent.trim();
+    if (!cmd) return;
 
-    btn.addEventListener('click', function () {
-      var cmd = cmdEl.textContent.trim();
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(cmd).then(function () {
-          btn.textContent = 'ok';
-          setTimeout(function () { btn.textContent = 'copy'; }, 1200);
-        }).catch(function () {
-          btn.textContent = 'select';
-        });
-      } else {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(cmd).then(function () {
+        btn.textContent = 'ok';
+        setTimeout(function () { btn.textContent = 'copy'; }, 1200);
+      }).catch(function () {
         btn.textContent = 'select';
-      }
+      });
+    } else {
+      btn.textContent = 'select';
+    }
+  }
+
+  function bindCopy() {
+    document.querySelectorAll('.copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        copyCommand(btn);
+      });
     });
   }
 
@@ -345,7 +401,7 @@
       return;
     }
 
-    // Hide pending beat content until played
+    // Hide pending beat content until played.
     beats.forEach(function (beat, i) {
       if (i === 0) return;
       beat.classList.add('is-pending');
